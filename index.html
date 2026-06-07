@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Git Visual Master Dashboard | Interactive Git Learning Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>GitHub Master Dashboard | Complete Git Command Center</title>
     <style>
         * {
             margin: 0;
@@ -13,177 +12,303 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a1a2e;
             overflow-x: hidden;
         }
 
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
-            animation: float 20s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
+        /* Dashboard Container */
         .dashboard {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
-            z-index: 1;
         }
 
+        /* Header */
         .header {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+            background-size: 50px 50px;
+            animation: shift 20s linear infinite;
+        }
+
+        @keyframes shift {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(50px,50px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .title h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #a8c0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title p {
+            color: #a8c0ff;
+            font-size: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .git-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #f34f29, #f14e32);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .visual-diagram {
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .git-flow {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .flow-node {
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .flow-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: transform 0.3s;
-        }
-
-        .flow-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .flow-arrow {
+        .stat-number {
+            color: white;
             font-size: 2rem;
-            color: #667eea;
+            font-weight: bold;
         }
 
+        .stat-label {
+            color: #a8c0ff;
+            font-size: 0.9rem;
+        }
+
+        /* Search Bar */
         .search-container {
-            background: rgba(255,255,255,0.1);
+            background: white;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        .search-container input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
+        .search-box {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 1rem;
-            background: rgba(255,255,255,0.9);
+            transition: all 0.3s;
         }
 
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Category Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        .tab:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Commands Grid */
         .commands-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
 
         .command-card {
-            background: rgba(255,255,255,0.95);
+            background: white;
             border-radius: 15px;
             padding: 20px;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
-            color: #1a1a2e;
         }
 
         .command-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
-        .command-visual {
-            height: 120px;
-            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
-            border-radius: 10px;
+        .command-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .command-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .command-description {
+            color: #718096;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            line-height: 1.5;
         }
 
+        .command-example {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #2d3748;
+            border-left: 3px solid #667eea;
+            margin-top: 10px;
+        }
+
+        .command-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #edf2f7;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #edf2f7;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .quick-actions h3 {
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            background: #edf2f7;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Terminal Emulator */
         .terminal {
-            background: #0a0a0f;
+            background: #1a1a2e;
             border-radius: 15px;
             padding: 20px;
             margin-top: 30px;
-            border: 1px solid #00ff00;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .terminal-header {
@@ -203,6 +328,9 @@
         .terminal-dot.green { background: #27c93f; }
 
         .terminal-body {
+            background: #0f0f1f;
+            border-radius: 10px;
+            padding: 20px;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             min-height: 200px;
@@ -212,6 +340,7 @@
 
         .terminal-line {
             margin-bottom: 10px;
+            line-height: 1.5;
         }
 
         .terminal-input-line {
@@ -222,6 +351,7 @@
 
         .terminal-prompt {
             color: #00ff00;
+            font-weight: bold;
         }
 
         .terminal-input {
@@ -234,6 +364,7 @@
             outline: none;
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -241,7 +372,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.8);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -251,23 +382,100 @@
             background: white;
             border-radius: 20px;
             padding: 30px;
-            max-width: 700px;
+            max-width: 600px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            color: #1a1a2e;
         }
 
+        .modal-header {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Visual Diagram */
+        .visual-diagram {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .git-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .flow-node {
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .flow-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .commands-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
             .git-flow {
                 flex-direction: column;
             }
+            
             .flow-arrow {
                 transform: rotate(90deg);
             }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
         }
 
         @keyframes slideIn {
@@ -283,23 +491,32 @@
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-    </div>
-
-    <div class="animated-bg" id="animatedBg"></div>
-    
     <div class="dashboard">
+        <!-- Header -->
         <div class="header">
-            <div class="logo-container">
-                <div class="git-logo">🐙</div>
-                <div>
-                    <h1 style="font-size: 2rem;">Git Visual Master Dashboard</h1>
-                    <p>Interactive Learning Platform with Visual Git Workflows</p>
+            <div class="header-content">
+                <div class="title">
+                    <h1>🐙 GitHub Master Dashboard</h1>
+                    <p>Complete Git & GitHub Command Reference | Professional Edition</p>
+                </div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCommands">0</div>
+                        <div class="stat-label">Total Commands</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCategories">0</div>
+                        <div class="stat-label">Categories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="lastUpdated">2024</div>
+                        <div class="stat-label">Last Updated</div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Visual Git Flow Diagram -->
         <div class="visual-diagram">
             <h3>🔄 Git Workflow Visualized</h3>
             <div class="git-flow">
@@ -329,23 +546,45 @@
             </div>
         </div>
 
+        <!-- Search -->
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="🔍 Search Git commands (git init, merge, rebase...)" autocomplete="off">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search Git commands, examples, or descriptions... (e.g., 'branch', 'merge', 'rebase')">
+                <button class="search-btn" onclick="searchCommands()">Search</button>
+                <button class="search-btn" onclick="clearSearch()" style="background: #718096;">Clear</button>
+            </div>
         </div>
 
+        <!-- Tabs -->
+        <div class="tabs" id="tabs"></div>
+
+        <!-- Commands Grid -->
         <div class="commands-grid" id="commandsGrid"></div>
 
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>⚡ Quick Actions</h3>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="showRandomCommand()">🎲 Random Command</button>
+                <button class="action-btn" onclick="showCheatSheet()">📋 Show Cheat Sheet</button>
+                <button class="action-btn" onclick="exportCommands()">💾 Export All Commands</button>
+                <button class="action-btn" onclick="showWorkflow()">🔄 Show Common Workflow</button>
+                <button class="action-btn" onclick="testCommand()">🧪 Test Command in Terminal</button>
+            </div>
+        </div>
+
+        <!-- Terminal Emulator -->
         <div class="terminal">
             <div class="terminal-header">
                 <div class="terminal-dot red"></div>
                 <div class="terminal-dot yellow"></div>
                 <div class="terminal-dot green"></div>
-                <span style="color: #888; margin-left: 10px;">git@visual-terminal:~</span>
+                <span style="color: #a0aec0; margin-left: 10px;">git@terminal:~</span>
             </div>
             <div class="terminal-body" id="terminalBody">
-                <div class="terminal-line">$ Welcome to Visual Git Terminal</div>
-                <div class="terminal-line">$ Type any command to see visual explanation</div>
-                <div class="terminal-line">$ Try: git status, git commit, git merge</div>
+                <div class="terminal-line">$ Welcome to Git Terminal Emulator</div>
+                <div class="terminal-line">$ Type any Git command to see explanation</div>
+                <div class="terminal-line">$ Example: git status</div>
                 <div class="terminal-line"><br></div>
                 <div class="terminal-input-line">
                     <span class="terminal-prompt">$</span>
@@ -355,13 +594,340 @@
         </div>
     </div>
 
-    <div class="modal" id="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span style="float: right; cursor: pointer; font-size: 1.5rem;" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header" id="modalTitle"></div>
+            <div id="modalBody"></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Complete Git Commands Database - Professional Edition
+        const commandsDatabase = {
+            "📁 Basic Commands": [
+                { command: "git init", description: "Initialize a new Git repository in current directory", example: "git init", useCase: "Starting a new project with Git tracking" },
+                { command: "git clone", description: "Copy an existing repository from remote URL", example: "git clone https://github.com/user/repo.git", useCase: "Download a project to work locally" },
+                { command: "git status", description: "Show working directory and staging area status", example: "git status", useCase: "See what changes are staged or unstaged" },
+                { command: "git add", description: "Add file contents to staging area", example: "git add file.txt or git add .", useCase: "Prepare changes for commit" },
+                { command: "git commit", description: "Record changes to repository", example: "git commit -m 'message'", useCase: "Save staged changes with description" },
+                { command: "git push", description: "Upload local commits to remote repository", example: "git push origin main", useCase: "Share your commits with others" },
+                { command: "git pull", description: "Fetch and merge changes from remote", example: "git pull origin main", useCase: "Update local branch with remote changes" },
+                { command: "git fetch", description: "Download changes without merging", example: "git fetch origin", useCase: "See what's changed without applying updates" }
+            ],
+            "🌿 Branching & Merging": [
+                { command: "git branch", description: "List, create, or delete branches", example: "git branch feature-x", useCase: "Create isolated environment for features" },
+                { command: "git checkout", description: "Switch branches or restore files", example: "git checkout feature-branch", useCase: "Navigate between different branches" },
+                { command: "git merge", description: "Join two or more development histories", example: "git merge feature-branch", useCase: "Integrate changes from one branch to another" },
+                { command: "git rebase", description: "Reapply commits on top of another base tip", example: "git rebase main", useCase: "Create linear project history" },
+                { command: "git cherry-pick", description: "Apply specific commits to current branch", example: "git cherry-pick abc123", useCase: "Selectively copy commits" },
+                { command: "git switch", description: "Switch branches (modern alternative)", example: "git switch -c new-branch", useCase: "Safer branch switching" },
+                { command: "git restore", description: "Restore working tree files", example: "git restore file.txt", useCase: "Discard local changes" }
+            ],
+            "📜 History & Logs": [
+                { command: "git log", description: "Show commit history", example: "git log --oneline --graph", useCase: "Visualize project history" },
+                { command: "git diff", description: "Show changes between commits/working tree", example: "git diff HEAD~1", useCase: "See what changed before committing" },
+                { command: "git show", description: "Show various types of objects", example: "git show commit-hash", useCase: "View detailed commit information" },
+                { command: "git blame", description: "Show who changed what in each line", example: "git blame file.txt", useCase: "Find who made specific changes" },
+                { command: "git reflog", description: "Reference logs (local history)", example: "git reflog", useCase: "Recover lost commits" },
+                { command: "git shortlog", description: "Summarize git log output", example: "git shortlog -sn", useCase: "See commit count by author" }
+            ],
+            "⏪ Undoing Changes": [
+                { command: "git reset", description: "Reset current HEAD to specified state", example: "git reset --soft HEAD~1", useCase: "Undo commits while keeping changes" },
+                { command: "git revert", description: "Create new commit that undoes previous", example: "git revert commit-hash", useCase: "Safely undo published commits" },
+                { command: "git stash", description: "Save uncommitted changes temporarily", example: "git stash push -m 'WIP'", useCase: "Switch branches without committing" },
+                { command: "git clean", description: "Remove untracked files", example: "git clean -fd", useCase: "Clean up unwanted files" },
+                { command: "git rm", description: "Remove files from working tree and index", example: "git rm file.txt", useCase: "Stop tracking files" }
+            ],
+            "☁️ Remote & Collaboration": [
+                { command: "git remote", description: "Manage remote repositories", example: "git remote add upstream url", useCase: "Connect to multiple remotes" },
+                { command: "git push --force", description: "Force push (overwrites remote)", example: "git push --force origin main", useCase: "Update remote after rebase (use carefully!)" },
+                { command: "git tag", description: "Create, list, or delete tags", example: "git tag -a v1.0 -m 'Release'", useCase: "Mark important commits (releases)" },
+                { command: "git fetch --prune", description: "Fetch and remove remote-tracking branches", example: "git fetch --prune origin", useCase: "Clean up deleted remote branches" },
+                { command: "git submodule", description: "Manage submodules (repo within repo)", example: "git submodule add url", useCase: "Include external repositories" }
+            ],
+            "🚀 Advanced Git": [
+                { command: "git bisect", description: "Binary search for bug-introducing commit", example: "git bisect start", useCase: "Find which commit broke something" },
+                { command: "git grep", description: "Search content in tracked files", example: "git grep 'function name'", useCase: "Find code across entire history" },
+                { command: "git worktree", description: "Manage multiple working trees", example: "git worktree add ../branch-name", useCase: "Work on multiple branches simultaneously" },
+                { command: "git filter-branch", description: "Rewrite branches (history rewriting)", example: "git filter-branch --tree-filter", useCase: "Remove sensitive data from history" },
+                { command: "git notes", description: "Add or inspect notes on commits", example: "git notes add -m 'Note' commit-hash", useCase: "Add extra information to commits" },
+                { command: "git replace", description: "Replace objects (advanced)", example: "git replace commit1 commit2", useCase: "Temporarily replace commits" }
+            ]
+        };
+
+        let currentCategory = "📁 Basic Commands";
+        let totalCommands = 0;
+
+        // Calculate total commands
+        for (let category in commandsDatabase) {
+            totalCommands += commandsDatabase[category].length;
+        }
+        document.getElementById('totalCommands').innerText = totalCommands;
+        document.getElementById('totalCategories').innerText = Object.keys(commandsDatabase).length;
+
+        // Render Tabs
+        function renderTabs() {
+            const tabsContainer = document.getElementById('tabs');
+            tabsContainer.innerHTML = '';
+            for (let category in commandsDatabase) {
+                const tab = document.createElement('button');
+                tab.className = 'tab' + (category === currentCategory ? ' active' : '');
+                tab.textContent = category;
+                tab.onclick = () => {
+                    currentCategory = category;
+                    renderTabs();
+                    renderCommands();
+                };
+                tabsContainer.appendChild(tab);
+            }
+        }
+
+        // Render Commands
+        function renderCommands() {
+            const grid = document.getElementById('commandsGrid');
+            const commands = commandsDatabase[currentCategory];
+            grid.innerHTML = '';
+            
+            commands.forEach(cmd => {
+                const card = document.createElement('div');
+                card.className = 'command-card';
+                card.onclick = () => showCommandDetails(cmd);
+                
+                card.innerHTML = `
+                    <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('${cmd.command}')">📋 Copy</button>
+                    <div class="command-title">${cmd.command}</div>
+                    <div class="command-description">${cmd.description}</div>
+                    <div class="command-example">${cmd.example}</div>
+                    <div class="command-category">${currentCategory}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Search Functionality
+        function searchCommands() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                renderCommands();
+                return;
+            }
+
+            const results = [];
+            for (let category in commandsDatabase) {
+                commandsDatabase[category].forEach(cmd => {
+                    if (cmd.command.toLowerCase().includes(searchTerm) ||
+                        cmd.description.toLowerCase().includes(searchTerm) ||
+                        cmd.example.toLowerCase().includes(searchTerm) ||
+                        cmd.useCase.toLowerCase().includes(searchTerm)) {
+                        results.push({ ...cmd, category });
+                    }
+                });
+            }
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const grid = document.getElementById('commandsGrid');
+            if (results.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px;">🔍 No commands found. Try "init", "branch", or "merge"</div>';
+                return;
+            }
+
+            grid.innerHTML = '';
+            results.forEach(cmd => {
+                const card = document.createElement('div');
+                card.className = 'command-card';
+                card.onclick = () => showCommandDetails(cmd);
+                card.innerHTML = `
+                    <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('${cmd.command}')">📋 Copy</button>
+                    <div class="command-title">${cmd.command}</div>
+                    <div class="command-description">${cmd.description}</div>
+                    <div class="command-example">${cmd.example}</div>
+                    <div class="command-category">${cmd.category || currentCategory}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            renderCommands();
+        }
+
+        // Helper Functions
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            showToast(`✅ Copied: ${text}`);
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        function showCommandDetails(cmd) {
+            document.getElementById('modalTitle').innerHTML = cmd.command;
+            document.getElementById('modalBody').innerHTML = `
+                <p><strong>📝 Description:</strong> ${cmd.description}</p>
+                <p><strong>💻 Example:</strong> <code style="background:#f0f0f0; padding:5px; border-radius:5px;">${cmd.example}</code></p>
+                <p><strong>🎯 Use Case:</strong> ${cmd.useCase}</p>
+                <p><strong>📂 Category:</strong> ${cmd.category || currentCategory}</p>
+                <button onclick="copyToClipboard('${cmd.command}')" style="margin-top:20px; padding:10px 20px; background:#667eea; color:white; border:none; border-radius:8px; cursor:pointer;">📋 Copy Command</button>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function showRandomCommand() {
+            const allCommands = [];
+            for (let category in commandsDatabase) {
+                allCommands.push(...commandsDatabase[category]);
+            }
+            const random = allCommands[Math.floor(Math.random() * allCommands.length)];
+            showCommandDetails(random);
+        }
+
+        function showCheatSheet() {
+            let cheatSheet = '# Git Cheat Sheet\n\n';
+            for (let category in commandsDatabase) {
+                cheatSheet += `## ${category}\n`;
+                commandsDatabase[category].forEach(cmd => {
+                    cheatSheet += `- \`${cmd.command}\` - ${cmd.description}\n`;
+                });
+                cheatSheet += '\n';
+            }
+            
+            document.getElementById('modalTitle').innerHTML = '📋 Complete Git Cheat Sheet';
+            document.getElementById('modalBody').innerHTML = `
+                <pre style="background:#1a1a2e; color:#00ff00; padding:15px; border-radius:10px; overflow-x:auto; font-size:0.8rem;">${cheatSheet}</pre>
+                <button onclick="copyToClipboard(\`${cheatSheet.replace(/`/g, '\\`')}\`)" style="margin-top:20px; padding:10px 20px; background:#667eea; color:white; border:none; border-radius:8px; cursor:pointer;">📋 Copy Cheat Sheet</button>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function exportCommands() {
+            const dataStr = JSON.stringify(commandsDatabase, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'git-commands-database.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('💾 Commands exported successfully!');
+        }
+
+        function showWorkflow() {
+            const workflow = `
+                <h3>Common Git Workflow for Feature Development</h3>
+                <ol style="margin-left:20px; line-height:1.8;">
+                    <li><code>git checkout main</code> - Switch to main branch</li>
+                    <li><code>git pull origin main</code> - Get latest changes</li>
+                    <li><code>git checkout -b feature/your-feature</code> - Create feature branch</li>
+                    <li><code>git add .</code> - Stage your changes</li>
+                    <li><code>git commit -m "Add feature"</code> - Commit changes</li>
+                    <li><code>git push -u origin feature/your-feature</code> - Push to remote</li>
+                    <li>Create Pull Request on GitHub</li>
+                    <li>After merge: <code>git checkout main && git pull origin main</code></li>
+                </ol>
+                <h4 style="margin-top:20px;">Hotfix Workflow</h4>
+                <ol style="margin-left:20px; line-height:1.8;">
+                    <li><code>git checkout -b hotfix/urgent-fix main</code></li>
+                    <li>Fix the bug and commit</li>
+                    <li><code>git push -u origin hotfix/urgent-fix</code></li>
+                    <li>Create PR targeting main</li>
+                    <li>Merge and tag: <code>git tag -a v1.0.1 -m "Hotfix"</code></li>
+                </ol>
+            `;
+            document.getElementById('modalTitle').innerHTML = '🔄 Standard Git Workflows';
+            document.getElementById('modalBody').innerHTML = workflow;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function testCommand() {
+            const input = document.getElementById('terminalInput');
+            input.focus();
+            showToast('⌨️ Type a command in the terminal below!');
+        }
+
+        function handleTerminalCommand(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const command = input.value.trim();
+                if (command) {
+                    addTerminalLine(`$ ${command}`);
+                    explainCommand(command);
+                    input.value = '';
+                }
+            }
+        }
+
+        function addTerminalLine(text) {
+            const terminalBody = document.getElementById('terminalBody');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.textContent = text;
+            terminalBody.insertBefore(line, terminalBody.lastElementChild);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function explainCommand(command) {
+            let found = false;
+            for (let category in commandsDatabase) {
+                for (let cmd of commandsDatabase[category]) {
+                    if (command.includes(cmd.command) || cmd.command.includes(command)) {
+                        addTerminalLine(`→ ${cmd.description}`);
+                        addTerminalLine(`→ Example: ${cmd.example}`);
+                        addTerminalLine(`→ Use case: ${cmd.useCase}`);
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+            
+            if (!found) {
+                addTerminalLine(`→ Command not found in database. Try 'git status', 'git commit', etc.`);
+                addTerminalLine(`→ For help: git --help`);
+            }
+            addTerminalLine('');
+        }
+
+        // Initialize Dashboard
+        renderTabs();
+        renderCommands();
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === '/') {
+                e.preventDefault();
+                showCheatSheet();
+            }
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+
+        // Update last updated
+        document.getElementById('lastUpdated').innerText = new Date().getFullYear();
+    </script>
 </body>
 </html>
