@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Visual Master Dashboard | Interactive Git Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .git-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f34f29, #f14e32);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .visual-diagram {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .git-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .flow-node {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .flow-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .flow-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .search-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .command-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            color: #1a1a2e;
+        }
+
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .command-visual {
+            height: 120px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal {
+            background: #0a0a0f;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid #00ff00;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+
+        .terminal-body {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 10px;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #1a1a2e;
+        }
+
+        @media (max-width: 768px) {
+            .commands-grid {
+                grid-template-columns: 1fr;
+            }
+            .git-flow {
+                flex-direction: column;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="animated-bg" id="animatedBg"></div>
+    
+    <div class="dashboard">
+        <div class="header">
+            <div class="logo-container">
+                <div class="git-logo">🐙</div>
+                <div>
+                    <h1 style="font-size: 2rem;">Git Visual Master Dashboard</h1>
+                    <p>Interactive Learning Platform with Visual Git Workflows</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="visual-diagram">
+            <h3>🔄 Git Workflow Visualized</h3>
+            <div class="git-flow">
+                <div class="flow-node">
+                    <div class="flow-icon">💻</div>
+                    <div>Working Directory</div>
+                    <small>Your files</small>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-icon">📦</div>
+                    <div>Staging Area</div>
+                    <small>git add</small>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-icon">💾</div>
+                    <div>Local Repository</div>
+                    <small>git commit</small>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-icon">☁️</div>
+                    <div>Remote Repository</div>
+                    <small>git push</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="🔍 Search Git commands (git init, merge, rebase...)" autocomplete="off">
+        </div>
+
+        <div class="commands-grid" id="commandsGrid"></div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span style="color: #888; margin-left: 10px;">git@visual-terminal:~</span>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="terminal-line">$ Welcome to Visual Git Terminal</div>
+                <div class="terminal-line">$ Type any command to see visual explanation</div>
+                <div class="terminal-line">$ Try: git status, git commit, git merge</div>
+                <div class="terminal-line"><br></div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="git command..." onkeypress="handleTerminalCommand(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span style="float: right; cursor: pointer; font-size: 1.5rem;" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
